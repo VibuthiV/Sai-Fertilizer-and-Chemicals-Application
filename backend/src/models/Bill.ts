@@ -18,7 +18,6 @@ export interface BillItem {
 export interface Bill {
   id: number;
   billNumber: string;
-  customerId: number | null;
   customerName: string;
   customerPhone: string;
   customerAadhar: string | null;
@@ -42,7 +41,6 @@ export interface CreateBillItemDto {
 }
 
 export interface CreateBillDto {
-  customerId?: number;
   customerName: string;
   customerPhone: string;
   customerAadhar?: string;

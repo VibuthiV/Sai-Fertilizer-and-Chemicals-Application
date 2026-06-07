@@ -12,10 +12,6 @@ export const API_ENDPOINTS = {
   PRODUCTS: '/products',
   PRODUCT_BY_ID: (id: number) => `/products/${id}`,
 
-  // Customers
-  CUSTOMERS: '/customers',
-  CUSTOMER_BY_ID: (id: number) => `/customers/${id}`,
-
   // Bills
   BILLS: '/bills',
   BILL_BY_ID: (id: number) => `/bills/${id}`,

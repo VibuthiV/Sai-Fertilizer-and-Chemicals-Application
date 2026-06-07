@@ -11,9 +11,8 @@ export const billController = {
       const page = parseInt(req.query.page as string || '1', 10);
       const limit = parseInt(req.query.limit as string || '20', 10);
       const search = req.query.search as string | undefined;
-      const customerId = req.query.customerId ? parseInt(req.query.customerId as string, 10) : undefined;
 
-      const result = await billService.getAll({ page, limit, search, customerId });
+      const result = await billService.getAll({ page, limit, search });
       const { statusCode, body } = ApiResponse.paginated(
         result.items, result.total, result.page, limit
       );

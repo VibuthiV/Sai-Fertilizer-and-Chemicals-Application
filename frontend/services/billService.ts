@@ -17,7 +17,6 @@ export const billService = {
    */
   getAll: async (params?: {
     search?: string;
-    customerId?: number;
     page?: number;
     limit?: number;
   }): Promise<PaginatedResponse<Bill>> => {

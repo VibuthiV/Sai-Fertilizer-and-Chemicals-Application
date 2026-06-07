@@ -30,25 +30,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
 
--- ─────────────────────────────────────────────────────────────
--- Table: customers
--- ─────────────────────────────────────────────────────────────
-CREATE TABLE IF NOT EXISTS customers (
-    id               SERIAL PRIMARY KEY,
-    name             VARCHAR(100) NOT NULL,
-    phone            VARCHAR(20)  NOT NULL,
-    email            VARCHAR(100),
-    address          TEXT,
-    village          VARCHAR(100),
-    total_purchases  DECIMAL(12,2) NOT NULL DEFAULT 0.00,
-    is_active        BOOLEAN       NOT NULL DEFAULT TRUE,
-    created_at       TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
-    updated_at       TIMESTAMPTZ   NOT NULL DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_customers_name    ON customers(name);
-CREATE INDEX IF NOT EXISTS idx_customers_phone   ON customers(phone);
-CREATE INDEX IF NOT EXISTS idx_customers_active  ON customers(is_active);
 
 -- ─────────────────────────────────────────────────────────────
 -- Table: products
@@ -80,7 +61,6 @@ CREATE INDEX IF NOT EXISTS idx_products_stock    ON products(current_stock, low_
 CREATE TABLE IF NOT EXISTS bills (
     id               SERIAL PRIMARY KEY,
     bill_number      VARCHAR(30)   NOT NULL UNIQUE,
-    customer_id      INTEGER       REFERENCES customers(id) ON DELETE SET NULL,
     customer_name    VARCHAR(100)  NOT NULL,
     customer_phone   VARCHAR(20)   NOT NULL,
     subtotal         DECIMAL(12,2) NOT NULL DEFAULT 0.00,
@@ -94,7 +74,6 @@ CREATE TABLE IF NOT EXISTS bills (
     updated_at       TIMESTAMPTZ   NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX IF NOT EXISTS idx_bills_customer_id     ON bills(customer_id);
 CREATE INDEX IF NOT EXISTS idx_bills_bill_number     ON bills(bill_number);
 CREATE INDEX IF NOT EXISTS idx_bills_created_at      ON bills(created_at);
 CREATE INDEX IF NOT EXISTS idx_bills_payment_status  ON bills(payment_status);
@@ -134,7 +113,7 @@ DO $$
 DECLARE
     tbl TEXT;
 BEGIN
-    FOREACH tbl IN ARRAY ARRAY['users', 'customers', 'products', 'bills'] LOOP
+    FOREACH tbl IN ARRAY ARRAY['users', 'products', 'bills'] LOOP
         EXECUTE format(
             'DROP TRIGGER IF EXISTS set_updated_at ON %I;
              CREATE TRIGGER set_updated_at

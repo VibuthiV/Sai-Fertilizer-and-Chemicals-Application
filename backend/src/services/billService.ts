@@ -13,17 +13,11 @@ export const billService = {
     page: number;
     limit: number;
     search?: string;
-    customerId?: number;
   }) => {
-    const { page, limit, search, customerId } = params;
+    const { page, limit, search } = params;
     const offset = (page - 1) * limit;
     const conditions: string[] = [];
     const values: any[] = [];
-
-    if (customerId) {
-      values.push(customerId);
-      conditions.push(`customer_id = $${values.length}`);
-    }
 
     if (search) {
       values.push(`%${search}%`);
@@ -128,11 +122,10 @@ export const billService = {
 
       // Insert Bill
       const billRes = await client.query<any>(
-        `INSERT INTO bills (customer_id, customer_name, customer_phone, customer_aadhar, subtotal, discount_amount, tax_amount, total_amount, payment_method, payment_status, notes)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        `INSERT INTO bills (customer_name, customer_phone, customer_aadhar, subtotal, discount_amount, tax_amount, total_amount, payment_method, payment_status, notes)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
          RETURNING *`,
         [
-          dto.customerId || null,
           dto.customerName,
           dto.customerPhone,
           dto.customerAadhar || null,
@@ -174,13 +167,6 @@ export const billService = {
         );
       }
 
-      // Update customer total purchases if customer exists
-      if (dto.customerId) {
-        await client.query(
-          `UPDATE customers SET total_purchases = total_purchases + $1 WHERE id = $2`,
-          [totalAmount, dto.customerId]
-        );
-      }
 
       await client.query('COMMIT');
 
