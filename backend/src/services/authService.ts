@@ -82,19 +82,21 @@ export const authService = {
     userId: number,
     data: { adminName: string; shopName: string; contactPhone: string; address: string; gstin: string }
   ): Promise<UserPublic> => {
+    const username = data.adminName.trim().toLowerCase();
     const result = await query<User>(
       `UPDATE users
-       SET admin_name = $1,
-           shop_name = $2,
-           contact_phone = $3,
-           address = $4,
-           gstin = $5,
+       SET username = $1,
+           admin_name = $2,
+           shop_name = $3,
+           contact_phone = $4,
+           address = $5,
+           gstin = $6,
            updated_at = NOW()
-       WHERE id = $6 AND is_active = true
+       WHERE id = $7 AND is_active = true
        RETURNING id, username, role, created_at AS "createdAt",
                  admin_name AS "adminName", shop_name AS "shopName",
                  contact_phone AS "contactPhone", address, gstin`,
-      [data.adminName, data.shopName, data.contactPhone, data.address, data.gstin, userId]
+      [username, data.adminName, data.shopName, data.contactPhone, data.address, data.gstin, userId]
     );
 
     if (!result.rows[0]) {

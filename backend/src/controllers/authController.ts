@@ -13,9 +13,20 @@ export const authValidation = {
   updateProfile: [
     body('adminName').trim().notEmpty().withMessage('Admin Name is required'),
     body('shopName').trim().notEmpty().withMessage('Shop Name is required'),
-    body('contactPhone').trim().notEmpty().withMessage('Contact Number is required'),
+    body('contactPhone')
+      .trim()
+      .notEmpty()
+      .withMessage('Contact Number is required')
+      .matches(/^[+0-9\s-]{10,20}$/)
+      .withMessage('Please enter a valid contact number (10-20 digits)'),
     body('address').trim().notEmpty().withMessage('Address is required'),
-    body('gstin').trim().notEmpty().withMessage('GSTIN is required'),
+    body('gstin')
+      .trim()
+      .notEmpty()
+      .withMessage('GSTIN is required')
+      .toUpperCase()
+      .matches(/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/)
+      .withMessage('Please enter a valid 15-character Indian GSTIN format'),
   ],
   changePassword: [
     body('oldPassword').trim().notEmpty().withMessage('Old password is required'),

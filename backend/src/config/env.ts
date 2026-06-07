@@ -14,6 +14,13 @@ function requireEnv(key: string): string {
   return value;
 }
 
+const isProd = process.env.NODE_ENV === 'production';
+const jwtSecret = process.env.JWT_SECRET;
+
+if (isProd && (!jwtSecret || jwtSecret === 'fallback_secret_change_this')) {
+  throw new Error('PRODUCTION SECURITY ERROR: JWT_SECRET environment variable must be set to a strong, custom secret in production environments!');
+}
+
 export const env = {
   // Server
   PORT: parseInt(process.env.PORT || '3000', 10),
@@ -28,7 +35,7 @@ export const env = {
   DB_PASSWORD: process.env.DB_PASSWORD || '',
 
   // JWT
-  JWT_SECRET: process.env.JWT_SECRET || 'fallback_secret_change_this',
+  JWT_SECRET: jwtSecret || 'fallback_secret_change_this',
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '7d',
 
   // CORS

@@ -9,12 +9,13 @@
 -- Generated with bcrypt, cost factor 12
 -- To regenerate: node -e "const bcrypt=require('bcryptjs'); console.log(bcrypt.hashSync('admin123', 12));"
 
-INSERT INTO users (username, password_hash, role, is_active)
+INSERT INTO users (username, password_hash, role, is_active, admin_name)
 VALUES (
     'admin',
     '$2a$12$jPbTVnA/h6A204ezYfa..upjeaKcp5TPocTdbrJeHT9Pp2BixaIEa',
     'admin',
-    TRUE
+    TRUE,
+    'Admin'
 )
 ON CONFLICT (username) DO UPDATE
 SET

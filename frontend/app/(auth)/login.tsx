@@ -87,7 +87,7 @@ export default function LoginScreen() {
 
           {/* Username */}
           <TextInput
-            label="Username"
+            label="Username (Admin Name)"
             value={username}
             onChangeText={setUsername}
             mode="outlined"

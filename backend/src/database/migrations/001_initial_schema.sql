@@ -24,6 +24,11 @@ CREATE TABLE IF NOT EXISTS users (
     password_hash    TEXT         NOT NULL,
     role             VARCHAR(20)  NOT NULL DEFAULT 'admin' CHECK (role IN ('admin')),
     is_active        BOOLEAN      NOT NULL DEFAULT TRUE,
+    admin_name       VARCHAR(100) NOT NULL DEFAULT 'Admin User',
+    shop_name        VARCHAR(150) NOT NULL DEFAULT 'Sai Fertilizers & Chemicals',
+    contact_phone    VARCHAR(20)  NOT NULL DEFAULT '+91 98765 43210',
+    address          TEXT         NOT NULL DEFAULT 'NH Road, Shop No. 12, Main Market',
+    gstin            VARCHAR(50)  NOT NULL DEFAULT '33AAAAA1111A1Z1',
     created_at       TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
     updated_at       TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );
