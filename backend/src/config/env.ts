@@ -33,6 +33,7 @@ export const env = {
   DB_NAME: process.env.DB_NAME || 'fertilizer_shop_db',
   DB_USER: process.env.DB_USER || 'postgres',
   DB_PASSWORD: process.env.DB_PASSWORD || '',
+  DATABASE_URL: process.env.DATABASE_URL || undefined,
 
   // JWT
   JWT_SECRET: jwtSecret || 'fallback_secret_change_this',
